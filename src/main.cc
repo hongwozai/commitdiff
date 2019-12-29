@@ -26,9 +26,9 @@ int mapfiles (const std::string &prefix, const std::string &name) {
 
     /* cout << prefix + line << endl; */
     if (!prefix.empty()) {
-      analyFile(prefix + line, &cout);
+      analyFile(prefix + line, &cerr);
     } else {
-      analyFile(line, &cout);
+      analyFile(line, &cerr);
     }
   }
 }
@@ -44,7 +44,7 @@ int main(int argc, char *argv[])
 
   if (strcmp(argv[1], "-workspace") == 0) {
     WorkspaceAnalyzer *wa = new WorkspaceAnalyzer;
-    wa->setOstream(&cout);
+    wa->setOstream(&cerr);
     wa->walk(argv[2]);
     return 0;
   }

@@ -81,13 +81,17 @@ int analyFile(const std::string &filename, std::ostream *out) {
   std::ifstream stream;
   stream.open(filename.c_str());
   if (!stream.is_open()) {
+    /* cout << "filename failed: " << filename << endl; */
+    printf("filenam:%s %m\n", filename.c_str());
     exit(-1);
   }
 
   ANTLRInputStream input(stream);
   JavaLexer lexer(&input);
+  lexer.removeErrorListener(&ConsoleErrorListener::INSTANCE);
   CommonTokenStream tokens(&lexer);
   JavaParser parser(&tokens);
+  parser.removeErrorListener(&ConsoleErrorListener::INSTANCE);
 
   tree::ParseTree *tree = parser.compilationUnit();
   MyListener listener(out);

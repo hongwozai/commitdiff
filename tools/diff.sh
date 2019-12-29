@@ -3,6 +3,7 @@
 gitrepo=~/Workspaces/ant
 workspace=$(pwd)/$(basename $gitrepo)
 analyer=$(pwd)/../build/analyzer
+difftool=$(pwd)/commitdiff.py
 
 echo "workspace: ${workspace} reponame: $reponame"
 
@@ -27,6 +28,7 @@ OUTPUT=$workspace/diff.csv
 # 分配commitid
 NUM=1
 TOTAL=$(wc -l $workspace/commit.txt | awk '{print $1}')
+echo "NUM: $NUM, TOTAL: $TOTAL"
 while [ $NUM -lt $TOTAL ]; do
     # echo $NUM
     # low
@@ -36,22 +38,29 @@ while [ $NUM -lt $TOTAL ]; do
     commit1=`sed -n "${nth1}p" $workspace/commit.txt`
     commit2=`sed -n "${nth2}p" $workspace/commit.txt`
 
-    echo "git diff $commit1 $commit2"
+    echo "[==============] git diff $commit1 $commit2"
     git -C $gitrepo diff $commit1 $commit2 --name-only > $workspace/differencefiles
     [ $? -eq 0 ] || exit -1
 
-    # cat $workspace/differencefiles
+    cat $workspace/differencefiles
 
     # 切换目录
-    git -C $repo1 reset --hard $commit1 && \
-        git -C $repo2 reset --hard $commit2
+    git -C $repo1 reset --hard $commit1 > /dev/null && \
+        git -C $repo2 reset --hard $commit2 > /dev/null
     [ $? -eq 0 ] || exit -1
 
-    ${analyer} -files $workspace/differencefiles $repo1 > repo1.csv && \
-        ${analyer} -files $workspace/differencefiles $repo2 > repo2.csv
+    ${analyer} -files $workspace/differencefiles $repo1/ 2> $workspace/repo1.csv && \
+        ${analyer} -files $workspace/differencefiles $repo2/ 2> $workspace/repo2.csv
+
+    # cat $workspace/repo1.csv
+    # echo "--------------------"
+    # cat $workspace/repo2.csv
 
     let NUM=NUM+2
-    exit
-done
 
-# git -C $gitrepo diff --name-only
+    if [ $NUM -gt 96 ]; then
+        echo "sdf $NUM"
+        # for debug
+        exit
+    fi
+done
