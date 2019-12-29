@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 
-project(commitdiff)
+project(analyzer)
 
 aux_source_directory(parser PARSER_FILES)
 aux_source_directory(src SRC_FILES)

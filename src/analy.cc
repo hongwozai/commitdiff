@@ -59,12 +59,13 @@ class MyListener : public JavaParserBaseListener {
       return;
     }
 
-    /* TODO: 暂时没见过一行写多个属性的，先不管那么多 */
-    string fieldName = ctx->variableDeclarators()->getText();
-    *out << className << ","
-         << "FIELD,"
-         << fieldName << ","
-         << endl;
+    for (auto v : ctx->variableDeclarators()->variableDeclarator()) {
+      string fieldName = v->variableDeclaratorId()->getText();
+      *out << className << ","
+           << "FIELD,"
+           << fieldName << ","
+           << endl;
+    }
   }
 
  public:
@@ -79,6 +80,10 @@ class MyListener : public JavaParserBaseListener {
 int analyFile(const std::string &filename, std::ostream *out) {
   std::ifstream stream;
   stream.open(filename.c_str());
+  if (!stream.is_open()) {
+    exit(-1);
+  }
+
   ANTLRInputStream input(stream);
   JavaLexer lexer(&input);
   CommonTokenStream tokens(&lexer);

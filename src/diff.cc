@@ -39,12 +39,3 @@ void WorkspaceAnalyzer::walk(const std::string &name)
     perror("nftw");
   }
 }
-
-int main(int argc, char *argv[])
-{
-  ios::sync_with_stdio(false);
-  WorkspaceAnalyzer *wa = new WorkspaceAnalyzer;
-  wa->setOstream(&cout);
-  wa->walk("/home/zeya/Workspaces/ant/");
-  return 0;
-}
