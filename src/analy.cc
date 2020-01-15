@@ -40,16 +40,16 @@ class MyListener : public JavaParserBaseListener {
       return;
     }
     string methodSignature =
-        ctx->typeTypeOrVoid()->getText() + "|" +
+        /* ctx->typeTypeOrVoid()->getText() + "|" + */
         ctx->IDENTIFIER()->getText() +
         ctx->formalParameters()->getText();
 
     string methodBody = ctx->methodBody()->getText();
 
 
-    *out << className << ","
-         << "METHOD" << ","
-         << methodSignature << ","
+    *out << "METHOD" << ";"
+         << className << "."
+         << methodSignature << ";"
          << CRC32(methodBody)
          << endl;
   }
@@ -61,9 +61,9 @@ class MyListener : public JavaParserBaseListener {
 
     for (auto v : ctx->variableDeclarators()->variableDeclarator()) {
       string fieldName = v->variableDeclaratorId()->getText();
-      *out << className << ","
-           << "FIELD,"
-           << fieldName << ","
+      *out << "FIELD" << ";"
+           << className << "."
+           << fieldName << ";"
            << endl;
     }
   }

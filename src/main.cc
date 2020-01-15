@@ -26,8 +26,10 @@ int mapfiles (const std::string &prefix, const std::string &name) {
 
     /* cout << prefix + line << endl; */
     if (!prefix.empty()) {
+      printf("[analy] %s\n", (prefix + line).c_str());
       analyFile(prefix + line, &cerr);
     } else {
+      printf("[analy] %s\n", line.c_str());
       analyFile(line, &cerr);
     }
   }

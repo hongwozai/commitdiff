@@ -1,9 +1,15 @@
 #!/bin/bash
 
-gitrepo=~/Workspaces/ant
+gitrepo=$1
 workspace=$(pwd)/$(basename $gitrepo)
 analyer=$(pwd)/../build/analyzer
 difftool=$(pwd)/commitdiff.py
+TOTALNUM=$2
+
+if [ -z "$gitrepo" ]; then
+    echo "please input git repo"
+    exit
+fi
 
 echo "workspace: ${workspace} reponame: $reponame"
 
@@ -52,15 +58,22 @@ while [ $NUM -lt $TOTAL ]; do
     ${analyer} -files $workspace/differencefiles $repo1/ 2> $workspace/repo1.csv && \
         ${analyer} -files $workspace/differencefiles $repo2/ 2> $workspace/repo2.csv
 
+    # echo "--------------------"
     # cat $workspace/repo1.csv
     # echo "--------------------"
     # cat $workspace/repo2.csv
+    echo "--------------------"
+    ${difftool} $workspace/repo1.csv $workspace/repo2.csv "$commit1" 2>> $workspace/$(basename $gitrepo)_changes.csv
+    echo "===================="
 
-    let NUM=NUM+2
+    let NUM=NUM+1
+    echo $NUM
 
-    if [ $NUM -gt 96 ]; then
-        echo "sdf $NUM"
-        # for debug
-        exit
+    if [ -n "$TOTALNUM" ]; then
+        if [ $NUM -gt $TOTALNUM ]; then
+            echo "analy $NUM"
+            # for debug
+            exit
+        fi
     fi
 done

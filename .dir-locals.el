@@ -1,2 +1,1 @@
-((nil . ((mycc-google-style . t)
-         )))
+((nil . ((google-style-project . t))))

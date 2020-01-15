@@ -15,6 +15,6 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
   )
 target_compile_options(${PROJECT_NAME} PRIVATE -Wno-attributes)
 target_include_directories(${PROJECT_NAME} PRIVATE
-  /home/zeya/Workspaces/commitdiff/3rdparty/antlr4-cpp-runtime/runtime/src/
+  3rdparty/antlr4-cpp-runtime/runtime/src/
   parser/
   )
